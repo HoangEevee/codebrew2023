@@ -3,10 +3,8 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
 const mongoose = require("mongoose");
-// Connect to your mongo database using the MONGO_URL environmentvariable.
-// Locally, MONGO_URL will be loaded by dotenv from .env.
-// We've also used Heroku CLI to set MONGO_URL for our Heroku app before.
 
+// Connect to your mongo database using the MONGO_URL environmentvariable.
 mongoose.connect("mongodb+srv://jbdouz:yyJmlJ1QgVyvDLVR@cluster0.urf0zci.mongodb.net/?retryWrites=true&w=majority" || "mongodb://localhost", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -17,11 +15,10 @@ const db = mongoose.connection.on("error", (err) => {
     console.error(err);
     process.exit(1);
 });
+
 // Log to console once the database is open
 db.once("open", async () => {
     console.log(`Mongo connection started on ${db.host}:${db.port}`);
 });
 
 require("./People");
-// require("./Restaurants");
-// require("./Comments");
