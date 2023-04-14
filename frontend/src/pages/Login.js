@@ -11,17 +11,11 @@ function Login() {
 
     //all accounts data
     const [data, setData] = useState("");
-    //all restaurants data
-    const [restaurants, setRestaurant] = useState("");
 
     //Grab all accounts upon page load
     useEffect(() => {
         axios.get("/account/allAccounts").then((res) => {
             setData(res.data);
-        });
-
-        axios.get("/restaurant/allRestaurants").then((res) => {
-            setRestaurant(res.data);
         });
     }, []);
 
@@ -65,49 +59,6 @@ function Login() {
         }).then((res) => setaccountData(res.data));
     };
 
-    const deleteRestaurant = (restaurantID) => {
-        console.log(restaurantID);
-        axios({
-            method: "DELETE",
-
-            withCredentials: true,
-            url: "/restaurant/deleteRestaurant",
-            data: {
-                _id: restaurantID
-            }
-        }).then((res) => {
-            console.log(res);
-            // axios.get("/restaurant/allRestaurants").then(res=>{
-            //     setRestaurant(res.data)
-            // })
-            setRestaurant(
-                restaurants.filter(
-                    (restaurant) => restaurant._id !== restaurantID
-                )
-            );
-        });
-    };
-
-    const changeRestaurantName = (e, restaurantID) => {
-        e.preventDefault();
-        const restaurantName = e.target[0].value;
-        console.log(e);
-        axios({
-            method: "PUT",
-
-            withCredentials: true,
-            url: "/restaurant/updateRestaurant",
-            data: {
-                _id: restaurantID,
-                name: restaurantName
-            }
-        }).then((res) => {
-            axios.get("/restaurant/allRestaurants").then((res) => {
-                setRestaurant(res.data);
-            });
-        });
-    };
-
     return (
         <div>
             <h1>Create new account</h1>
@@ -139,51 +90,6 @@ function Login() {
                         <li>
                             {key}. Username: {data[key].username}. Password:{" "}
                             {data[key].password}
-                        </li>
-                    );
-                })}
-            </ul>
-
-            <ul>
-                <p>
-                    Delete button only remove restaurant from the list below but{" "}
-                    <u>
-                        <strong>not actually delete it from database</strong>
-                    </u>
-                    . Code for that is implemeted but commented out for safety
-                    reason
-                </p>
-                {Object.keys(restaurants).map((key) => {
-                    return (
-                        <li id={restaurants[key]._id}>
-                            {key}. Restaurant name: {restaurants[key].name}.
-                            Cuisine: {restaurants[key].cuisine}
-                            {/* for delete restaurant */}
-                            <button
-                                onClick={() =>
-                                    deleteRestaurant(restaurants[key]._id)
-                                }
-                            >
-                                Delete
-                            </button>
-                            {/* for Update restaurant name */}
-                            <form
-                                onSubmit={(e) =>
-                                    changeRestaurantName(
-                                        e,
-                                        restaurants[key]._id
-                                    )
-                                }
-                            >
-                                <label htmlFor="changeRestaurantName">
-                                    New Name:
-                                </label>
-                                <br />
-                                <input type="text" id="changeRestaurantName" />
-                                <br />
-                                <button type="submit">Change Name</button>
-                            </form>
-                            <br />
                         </li>
                     );
                 })}
