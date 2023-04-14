@@ -60,13 +60,12 @@ function Login() {
     };
 
     return (
-        <div>
+        <div id="login-container">
             <img src="logo.png" alt="logo"></img>
-            <h1>Log in with Facebook</h1>
-            <button type="submit>">Log in</button>
-            <h1>Log in with Instagram</h1>
-            <button type="submit>">Log in</button>
 
+            <a href="#" class="btn facebook">
+                <i class="fa fa-facebook fa-fw"></i>Login with Facebook</a>
+            <a href="#" class="btn instagram">Login with Instagram</a>
             <div>
                 <h1>Login</h1>
                 <input

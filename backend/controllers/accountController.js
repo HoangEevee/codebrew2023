@@ -1,6 +1,6 @@
 const Account = require("../models/People")
 
-const getAllAccount = async (req,res) => {
+const getAllAccounts = async (req,res) => {
     try {
         const accounts = await Account.find().lean()
         res.send(accounts)
@@ -10,5 +10,5 @@ const getAllAccount = async (req,res) => {
 }
 
 module.exports = {
-    getAllAccount
+    getAllAccounts
 }
