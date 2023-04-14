@@ -61,6 +61,25 @@ function Login() {
 
     return (
         <div>
+            <img src="logo.png" alt="logo"></img>
+            <h1>Log in with Facebook</h1>
+            <button type="submit>">Log in</button>
+            <h1>Log in with Instagram</h1>
+            <button type="submit>">Log in</button>
+
+            <div>
+                <h1>Login</h1>
+                <input
+                    placeholder="username"
+                    onChange={(e) => setLoginUsername(e.target.value)}
+                />
+                <input
+                    placeholder="password"
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                />
+                <button onClick={login}>Submit</button>
+            </div>
+
             <h1>Create new account</h1>
             <form onSubmit={createAccount}>
                 <label htmlFor="registerUsername">Username:</label>
@@ -84,7 +103,7 @@ function Login() {
                 <button type="submit">Send Name</button>
             </form>
 
-            <ul>
+            {/* <ul>
                 {Object.keys(data).map((key) => {
                     return (
                         <li>
@@ -93,20 +112,7 @@ function Login() {
                         </li>
                     );
                 })}
-            </ul>
-
-            <div>
-                <h1>Login</h1>
-                <input
-                    placeholder="username"
-                    onChange={(e) => setLoginUsername(e.target.value)}
-                />
-                <input
-                    placeholder="password"
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                />
-                <button onClick={login}>Submit</button>
-            </div>
+            </ul> */}
 
             <div>
                 <h1>Get User</h1>
