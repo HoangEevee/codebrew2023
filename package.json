@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mongodb": "^5.2.0",
+    "mongoose-random": "^0.1.1"
+  }
+}
