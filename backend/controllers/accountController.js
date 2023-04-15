@@ -1,7 +1,5 @@
 const Account = require("../models/account");
 const commonList = require("../models/commonList");
-const CommonList = require("../models/commonList");
-
 
 const getAllAccounts = async (req,res) => {
     try {
@@ -16,7 +14,7 @@ const createAccount = async (req, res) => {
     const {name, password, email, age, fbAcc, IgAcc, wishlist} = req.body;
 
     try {
-        const account = new Account({name: name, password: password, email: email, age: age, fbAcc: fbAcc, fbAcc: IgAcc, wishlist: wishlist});
+        const account = new Account({name: name, password: password, email: email, age: age, fbAcc: fbAcc, IgAcc: IgAcc, wishlist: wishlist});
         await account.save();
         res.send('Account created. Welcome!');
     } catch (err) {
@@ -48,6 +46,14 @@ const addWish = async(req, res) => {
     // wish will be in the form {wish:wish, schedFin:date, could be null, completed:default false}
     try {
         await Account.findOneAndUpdate({ email: email }, { $push: { wishlist: wish } }); // (query, update)
+        wishID = await commonList.exists({'wish.wish': wish.wish})._id
+        // if the wish is not in the database, save it to the common list, if it is in it, increment the count
+        if (wishID) {
+            commonList.findOneAndUpdate({_id: wishID}, {$inc : {'count' : 1}})
+        } else {
+            const newWish = new commonList( {wish: wish.wish, count: 0} );
+            await newWish.save();
+        }
         res.status(201).send('wish added to your list!');
     } catch(err) {
         res.status(400).send(err.message);
@@ -77,7 +83,7 @@ const finishWish = async(req, res) => {
 
 const getTopTenWish = async(req, res) => {
     try {
-        const topTen = await commonList.find().sort({count: -1}).limit(10).wish.lean();
+        const topTen = await commonList.find().sort({count: -1}).limit(10).lean()[0]['wish'];
         res.send(topTen);
     } catch(err) {
         res.status(400).send(err.message);
