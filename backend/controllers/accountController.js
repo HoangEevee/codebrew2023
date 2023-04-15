@@ -13,10 +13,10 @@ const getAllAccounts = async (req,res) => {
 }
 
 const createAccount = async (req, res) => {
-    const {name, password, email, age, fbAcc, IgAcc} = req.body;
+    const {name, password, email, age, fbAcc, IgAcc, wishlist} = req.body;
 
     try {
-        const account = new Account({name, password, email, age, fbAcc, IgAcc});
+        const account = new Account({name: name, password: password, email: email, age: age, fbAcc: fbAcc, fbAcc: IgAcc, wishlist: wishlist});
         await account.save();
         res.send('Account created. Welcome!');
     } catch (err) {
@@ -83,7 +83,7 @@ const getTopTenWish = async(req, res) => {
     }
 }
 
-const fetchRandomTen = async(req, res) => {
+const getRandomTen = async(req, res) => {
     try {
         const randomTen = await commonList.findRandom().limit(10).wish.lean();
         res.send(randomTen)
@@ -93,5 +93,5 @@ const fetchRandomTen = async(req, res) => {
 }
 
 module.exports = {
-    getAllAccounts, createAccount, login, addWish, changeWish, finishWish, getTopTenWish 
+    getAllAccounts, createAccount, login, addWish, changeWish, finishWish, getTopTenWish, getRandomTen
 }
