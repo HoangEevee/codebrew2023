@@ -5,7 +5,8 @@ const accountController = require("../controllers/accountController.js")
 mainRouter.get("/", (req, res) => res.send("Hello world"));
 
 mainRouter.get("/allAccounts", accountController.getAllAccounts);
-mainRouter.post("/login", accountController.createAccount);
+mainRouter.post("/createAccount", accountController.createAccount);
+mainRouter.post("/login", accountController.login);
 mainRouter.get("/addWish", accountController.addWish);
 mainRouter.post("/changeWish", accountController.changeWish);
 mainRouter.get("/finishWish", accountController.finishWish);

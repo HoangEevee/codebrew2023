@@ -8,13 +8,14 @@ hr {
 }
 
 #root {
-    background-image: radial-gradient(farthest-side at 10% 10%,#CC7486,#181c3b);
+    /* background-image:url("./res/background.png") */
+    background-image: radial-gradient(farthest-side at 1% 1%,#3C6A95,#181c3b);
 
     /* background-image: radial-gradient(red 5%, green 15%, blue 60%); */
     /* background-image: radial-gradient(circle,#CC7486,#181c3b), */
     /* background-color: #181c3b; */
 }
-#login-container {
+.center-container {
 
     display: flex;
     flex-direction: column;
