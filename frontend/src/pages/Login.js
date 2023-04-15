@@ -1,37 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import logo from "../res/logo.svg"
+import logo from "../res/angel.png"
+import { useNavigate } from "react-router-dom";
 function Login() {
-    const [registerUsername, setRegisterName] = useState("");
+    const [registerName, setRegisterName] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+    const [registerEmail, setRegisterEmail] = useState("");
+    const [registerAge, setRegisterAge] = useState("");
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
-    const [accountData, setaccountData] = useState("");
 
-    //all accounts data
-    // const [data, setData] = useState("");
-
-    //Grab all accounts upon page load
-    // useEffect(() => {
-    //     axios.get("/account/allAccounts").then((res) => {
-    //         setData(res.data);
-    //     });
-    // }, []);
-
+    const navigate = useNavigate()
     //create new user on mongodb and update display list
     async function createAccount(e) {
         e.preventDefault();
         try {
             // console.log({registerUsername,registerPassword})
-            await axios.post("/login", {
-                name: registerUsername,
+            await axios.post("/createAccount", {
+                name: registerName,
                 password: registerPassword,
-                role: "customer"
-            });
-            // axios.get("/account/allAccounts").then((res) => {
-            //     setData(res.data);
-            // });
+                email: registerEmail,
+                age: registerAge,
+                fbAcc: null,
+                IgAcc: null,
+            }).then(navigate("/customize"));
         } catch (error) {
             console.log(error);
         }
@@ -46,86 +39,73 @@ function Login() {
             },
             withCredentials: true,
             url: "/login"
-        }).then((res) => console.log(res));
+        }).then(navigate("/customize"));
     };
 
-    //grab logged in account data
-    const getUser = () => {
-        axios({
-            method: "GET",
+    const swap = () => {
+        const containers = document.querySelectorAll(".center-container")
+        containers.forEach((container) => {
+            if (container.className == "center-container") {
+                container.className = "center-container invisible"
+            }
+            else {
+                container.className = "center-container"
+            }
+        })
+    }
 
-            withCredentials: true,
-            url: "/account/oneAccount"
-        }).then((res) => setaccountData(res.data));
-    };
 
     return (
-        <div class="center-container">
-            <img class="logo-img" src={logo} alt="logo"></img>
+        <div>
+            <div class="center-container" id="login">
+                <img class="logo-img" src={logo} alt="logo"></img>
 
-            <a href="#" class="btn facebook">
-                <i class="fa fa-facebook fa-fw"></i>Continue with Facebook</a>
-            <a href="#" class="btn instagram">
-                <i class="fa fa-instagram fa-fw"></i>Continue with Instagram</a>
-            
-            <input class="btn"
-                placeholder="Enter your email..."
-                onChange={(e) => setLoginEmail(e.target.value)}
-            />
-            <input class="btn"
-                placeholder="Enter your password..."
-                onChange={(e) => setLoginPassword(e.target.value)}
-            />
-            <button class="btn" onClick={login}>Log in with email</button>
-    
-            <p> By Continuing with Facebook, Instagram, or Email, you agree to EndGame's Terms of Service and Privary Policy</p>
-            <hr></hr>
-            <p>Already signed up? Go to login</p>
-{/* 
+                <a href="#" class="btn facebook">
+                    <i class="fa fa-facebook fa-fw"></i>Log in with Facebook</a>
+                <a href="#" class="btn instagram">
+                    <i class="fa fa-instagram fa-fw"></i>Log in with Instagram</a>
+                
+                <input class="btn"
+                    placeholder="Enter your email..."
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                />
+                <input class="btn"
+                    placeholder="Enter your password..."
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                />
+                <button class="btn" onClick={login}>Log in with email</button>
+        
+                <p> By Continuing with Facebook, Instagram, or Email, you agree to EndGame's Terms of Service and Privary Policy</p>
+                <hr></hr>
+                <p>Don't have an account? 
+                    <span class="swap-to-register" onClick={swap}> <u>Go to signup</u></span>
+                </p>
+            </div>
 
-            <h1>Create new account</h1>
-            <form onSubmit={createAccount}>
-                <label htmlFor="registerUsername">Username:</label>
-                <br />
-                <input
-                    type="text"
-                    id="registerUsername"
-                    value={registerUsername}
+            <div class="center-container invisible" id="register">
+                <img class="logo-img" src={logo} alt="logo"></img>
+                <input class="btn"
+                    placeholder="Enter your name..."
                     onChange={(e) => setRegisterName(e.target.value)}
                 />
-                <br />
-                <label htmlFor="registerPassword">Password:</label>
-                <br />
-                <input
-                    type="text"
-                    id="registerPassword"
-                    value={registerPassword}
+                <input class="btn"
+                    placeholder="Enter your password..."
                     onChange={(e) => setRegisterPassword(e.target.value)}
                 />
-                <br />
-                <button type="submit">Send Name</button>
-            </form> */}
-
-            {/* <ul>
-                {Object.keys(data).map((key) => {
-                    return (
-                        <li>
-                            {key}. Username: {data[key].username}. Password:{" "}
-                            {data[key].password}
-                        </li>
-                    );
-                })}
-            </ul> */}
-
-            {/* <div>
-                <h1>Get User</h1>
-                <button onClick={getUser}>Submit</button>
-                {accountData ? (
-                    <h1>Welcome Back {accountData.username}</h1>
-                ) : null}
-            </div> */}
-
-            {/* <a href="./hi">Greeting!</a> */}
+                <input class="btn"
+                    placeholder="Enter your email..."
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                />
+                <input class="btn"
+                    placeholder="Enter your age..."
+                    onChange={(e) => setRegisterAge(e.target.value)}
+                />
+                <button class="btn" onClick={createAccount}>Register Account</button>
+                <hr></hr>
+                <p>Got an account already? 
+                    <span class="swap-to-register" onClick={swap}> <u>Go to login</u></span>
+                </p>
+            </div>
         </div>
     );
 }

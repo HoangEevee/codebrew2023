@@ -86,10 +86,11 @@ const getTopTenWish = async(req, res) => {
 
 const getRandomTen = async(req, res) => {
     try {
-        const randomTen = await commonList.findRandom().limit(10).wish.lean();
+        const randomTen = await commonList.find().lean();
+        console.log(randomTen)
         res.send(randomTen)
     } catch(err) {
-        res.status(400).send(err.message);
+        res.send(err.message);
     }
 }
 

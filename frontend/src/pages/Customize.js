@@ -9,36 +9,46 @@ function Customize() {
     const [commonList, setCommonList] = useState("")
     //Grab all accounts upon page load
     useEffect(() => {
-        axios.get("/account/allAccounts").then((res) => {
+        axios.get("/getRandomTen").then((res) => {
             setCommonList(res.data);
-        });
+        })
     }, []);
+
+    const click = (event) => {
+        const target = event.target
+        target.class = "select-box selected"
+    }
 
     return (
         <div class="center-container">
             <p>Select your list</p>
-            {/* {Object.keys(commonList).map((key) => {
+            {Object.keys(commonList).map((key) => {
                     return (
-                        <div class="btn">
+                        <div class="select-box" onClick={click}>
                             <p>{commonList[key].wish}</p>
                         </div>
                     );
-                })} */}
-            <div class = "btn">
+                })}
+            {/* <div class = "select-box" onClick={click}>
                 <p>Schedule a family meeting</p>
             </div>
-            <div class = "btn">
+            <div class = "select-box" onClick={click}>
                 <p>Schedule a family meeting</p>
             </div>
-            <div class = "btn">
+            <div class = "select-box" onClick={click}>
                 <p>Schedule a family meeting</p>
             </div>
-            <div class = "btn">
+            <div class = "select-box" onClick={click}>
                 <p>Schedule a family meeting</p>
             </div>
-            <div class = "btn">
+            <div class = "select-box" onClick={click}>
                 <p>Schedule a family meeting</p>
+            </div> */}
+            <div class="horizontal-flex">
+                <button class="btn"><i class="fa fa-solid fa-refresh"></i></button>
+                <button class="btn"><i class="fa fa-solid fa-arrow-right"></i></button>
             </div>
+            <p><u>Customize later</u></p>
         </div>
     )
 }

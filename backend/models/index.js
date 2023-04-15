@@ -22,3 +22,4 @@ db.once("open", async () => {
 });
 
 require("./account");
+require("./commonList");
