@@ -1,0 +1,10 @@
+{
+    "name": "codebrew2023",
+    "version": "0.1.0",
+
+    "scripts": {
+      "start": "cd backend && npm start && cd ../frontend %% npm start"
+    }
+    
+}
+  

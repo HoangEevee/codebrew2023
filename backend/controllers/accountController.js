@@ -1,3 +1,4 @@
+//mongodb account database
 const Account = require("../models/People")
 
 const getAllAccounts = async (req,res) => {
@@ -8,6 +9,7 @@ const getAllAccounts = async (req,res) => {
         console.log(err)
     }
 }
+
 
 module.exports = {
     getAllAccounts
