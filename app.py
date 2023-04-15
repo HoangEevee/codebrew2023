@@ -19,7 +19,6 @@ people = db.people
 notes = db.notes
 
 
-
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
