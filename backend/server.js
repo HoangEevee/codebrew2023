@@ -9,7 +9,7 @@ app.use(express.static(path.join(__dirname, "..", "client", "build"))); // defin
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: "25mb" }));
 
-var cors_origin = "http://localhost:8080";
+var cors_origin = "http://localhost:3000";
 
 app.use(cors({ origin: cors_origin, credentials: true }));
 

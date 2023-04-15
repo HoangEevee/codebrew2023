@@ -10,28 +10,28 @@ function Login() {
     const [accountData, setaccountData] = useState("");
 
     //all accounts data
-    const [data, setData] = useState("");
+    // const [data, setData] = useState("");
 
     //Grab all accounts upon page load
-    useEffect(() => {
-        axios.get("/account/allAccounts").then((res) => {
-            setData(res.data);
-        });
-    }, []);
+    // useEffect(() => {
+    //     axios.get("/account/allAccounts").then((res) => {
+    //         setData(res.data);
+    //     });
+    // }, []);
 
     //create new user on mongodb and update display list
     async function createAccount(e) {
         e.preventDefault();
         try {
             // console.log({registerUsername,registerPassword})
-            await axios.post("/account/register", {
+            await axios.post("/login", {
                 name: registerUsername,
                 password: registerPassword,
                 role: "customer"
             });
-            axios.get("/account/allAccounts").then((res) => {
-                setData(res.data);
-            });
+            // axios.get("/account/allAccounts").then((res) => {
+            //     setData(res.data);
+            // });
         } catch (error) {
             console.log(error);
         }
@@ -41,11 +41,11 @@ function Login() {
         axios({
             method: "POST",
             data: {
-                username: loginEmail,
+                email: loginEmail,
                 password: loginPassword
             },
             withCredentials: true,
-            url: "/account/login"
+            url: "/login"
         }).then((res) => console.log(res));
     };
 
@@ -60,7 +60,7 @@ function Login() {
     };
 
     return (
-        <div id="login-container">
+        <div class="center-container">
             <img class="logo-img" src={logo} alt="logo"></img>
 
             <a href="#" class="btn facebook">

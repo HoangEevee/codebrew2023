@@ -27,17 +27,18 @@ const createAccount = async (req, res) => {
 // we are using email and password to login
 const login = async (req, res) => {
     const {email, password} = req.body;
-
+    console.log(email,password)
     try {
         const account = await Account.exists({email: email, password: password});
         if (account) {
             // do we need all the account information?
+            console.log(account)
             res.send(account.lean());
         } else {
             res.send('Account not found!');
         }
     } catch(err) {
-        res.status(400).send(err.message);
+        res.send(err.message);
     }
 }
 
