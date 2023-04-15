@@ -44,6 +44,10 @@ const login = async (req, res) => {
 const addWish = async(req, res) => {
     const {email, wish}  = req.body; 
     // wish will be in the form {wish:wish, schedFin:date, could be null, completed:default false}
+
+    // wish content should be summarised, lemmatised because it can be put into the commonList because otherwith
+    // there will be different versions of the same thing because of different wording
+
     try {
         await Account.findOneAndUpdate({ email: email }, { $push: { wishlist: wish } }); // (query, update)
         wishID = await commonList.exists({'wish.wish': wish.wish})._id
@@ -57,6 +61,28 @@ const addWish = async(req, res) => {
         res.status(201).send('wish added to your list!');
     } catch(err) {
         res.status(400).send(err.message);
+    }
+}
+
+const addWishlist = async(req, res) => { //
+    const {email, wishlist} = req.body;
+    len = wishlist.length;
+    for (let i=0; i<len; i++) {
+        const wish = wishlist[0];
+        try {
+            await Account.findOneAndUpdate({ email: email }, { $push: { wishlist: wish } }); // (query, update)
+            wishID = await commonList.exists({'wish.wish': wish.wish})._id
+            // if the wish is not in the database, save it to the common list, if it is in it, increment the count
+            if (wishID) {
+                commonList.findOneAndUpdate({_id: wishID}, {$inc : {'count' : 1}})
+            } else {
+                const newWish = new commonList( {wish: wish.wish, count: 0} );
+                await newWish.save();
+            }
+            res.status(201).send('wish added to your list!');
+        } catch(err) {
+            res.status(400).send(err.message);
+        }
     }
 }
 
@@ -81,12 +107,18 @@ const finishWish = async(req, res) => {
     }
 }
 
+// right now, it is just returning the top ten most common wishes from the commonList 
+// later, we should be able to fit a logistic model for each wish in the list using personal information as predictor
+// and feedback the top10 wishes with the highest probability for the user to choose from
+// 
+// in the case of no social network account provided
+
 const getTopTenWish = async(req, res) => {
     try {
         const topTen = await commonList.find().sort({count: -1}).limit(10).lean();
         res.send(topTen);
     } catch(err) {
-        res..send(err.message);
+        res.send(err.message);
     }
 }
 
@@ -100,5 +132,5 @@ const getRandomTen = async(req, res) => {
 }
 
 module.exports = {
-    getAllAccounts, createAccount, login, addWish, changeWish, finishWish, getTopTenWish, getRandomTen
+    getAllAccounts, createAccount, login, addWish, addWishlist, changeWish, finishWish, getTopTenWish, getRandomTen
 }
