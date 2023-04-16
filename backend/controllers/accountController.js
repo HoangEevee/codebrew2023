@@ -83,10 +83,10 @@ const finishWish = async(req, res) => {
 
 const getTopTenWish = async(req, res) => {
     try {
-        const topTen = await commonList.find().sort({count: -1}).limit(10).lean()[0]['wish'];
+        const topTen = await commonList.find().sort({count: -1}).limit(10).lean();
         res.send(topTen);
     } catch(err) {
-        res.status(400).send(err.message);
+        res.send(err.message);
     }
 }
 
